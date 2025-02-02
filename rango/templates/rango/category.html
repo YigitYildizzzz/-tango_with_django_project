@@ -1,0 +1,22 @@
+{% extends 'rango/base.html' %}
+
+{% block body_block %}
+<div>
+    {% if category %}
+        <h1>{{ category.name }}</h1>
+        <p>{{ category.views }} views | {{ category.likes }} likes</p>
+
+        {% if pages %}
+            <ul>
+                {% for page in pages %}
+                    <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>No pages currently in category.</strong>
+        {% endif %}
+    {% else %}
+        <p>The specified category does not exist.</p>
+    {% endif %}
+</div>
+{% endblock %}
