@@ -12,3 +12,6 @@ def index(request):
 
 def about(request):
     return render(request, 'rango/about.html')
+
+def test_media(request):  
+    return render(request, 'rango/test_media.html')

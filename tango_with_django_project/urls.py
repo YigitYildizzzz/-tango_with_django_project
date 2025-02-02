@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rango import views  # Rango uygulamasını içe aktar
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),  # Ana sayfayı Rango'ya yönlendiriyoruz
-    path('rango/', include('rango.urls')),  # Rango uygulaması için yönlendirme
+    path('rango/', include('rango.urls')),
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
