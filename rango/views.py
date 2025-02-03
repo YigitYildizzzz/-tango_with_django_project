@@ -1,11 +1,47 @@
 from django.shortcuts import render,get_object_or_404
 from rango.models import Category, Page
+from django.urls import reverse
+from rango.forms import CategoryForm, PageForm
+from django.shortcuts import render, redirect 
+
+def add_category(request):
+    form = CategoryForm()
+    
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect(reverse('rango:index'))
+        else:
+            print(form.errors)
+    
+    return render(request, 'rango/add_category.html', {'form': form})
+
+
+def add_page(request, category_name_slug):
+    category = get_object_or_404(Category, slug=category_name_slug)
+    form = PageForm()
+    
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+        if form.is_valid():
+            page = form.save(commit=False)
+            page.category = category
+            page.views = 0
+            page.save()
+            return redirect(reverse('show_category', kwargs={'category_name_slug': category_name_slug}))
+        else:
+            print(form.errors)
+
+    return render(request, 'rango/add_page.html', {'form': form, 'category': category})
+
+
 
 def index(request):
     context_dict = {'boldmessage': 'Crunchy, creamy, cookie, candy, cupcake!'}
-    category_list = Category.objects.order_by('-views')[:5]  # En popüler 5 kategori
-    liked_category_list = Category.objects.order_by('-likes')[:5]  # En çok beğenilen 5 kategori
-    page_list = Page.objects.order_by('-views')[:5]  # En çok görüntülenen 5 sayfa
+    category_list = Category.objects.order_by('-views')[:5]  
+    liked_category_list = Category.objects.order_by('-likes')[:5]  
+    page_list = Page.objects.order_by('-views')[:5]  
     
     context_dict = {
         'categories': category_list,
