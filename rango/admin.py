@@ -27,9 +27,9 @@ class PageAdmin(admin.ModelAdmin):
         ('Meta Information', {'fields': ('views', 'created_at')}),
     )
 class MyAdminSite(admin.AdminSite):
-    site_header = "Rango Admin Panel"
-    site_title = "Rango Site Yönetimi"
-    index_title = "Hoşgeldiniz, Yönetici!"
+    site_header = "Django administration"
+    site_title = "Django administration"
+    index_title = "Welcome, Admin!"
 
 admin.site = MyAdminSite()
 
